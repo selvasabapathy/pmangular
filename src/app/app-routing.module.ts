@@ -8,14 +8,15 @@ import { TaskAddComponent } from './task-add/task-add.component';
 import { TaskUpdateComponent } from './task-update/task-update.component';
 import { TaskViewComponent } from './task-view/task-view.component';
 
-
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
+  { path: 'welcome', component: WelcomeComponent },
   { path: 'user', component:  UserComponent },
   { path: 'proj', component:  ProjComponent },
   { path: 'taskadd', component:  TaskAddComponent },
   { path: 'taskupdate', component:  TaskUpdateComponent },
-  { path: 'taskview', component: TaskViewComponent }
+  { path: 'taskview', component: TaskViewComponent },
+  { path: '**', component: WelcomeComponent },
 ];
 
 @NgModule({
