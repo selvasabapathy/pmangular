@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Sort} from '@angular/material';
+
 import { UserService } from '../service/user.service';
 
 export class User {
@@ -61,4 +63,27 @@ export class UserComponent implements OnInit {
       }
     )
   }
+
+  sortUsers(sort: Sort) {
+    const data = this.users;
+    if (!sort.active || sort.direction === '') {
+      this.users = data;
+      return;
+    }
+
+    this.users = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'employeeId': return this.compare(a.employeeId, b.employeeId, isAsc);
+        case 'firstName': return this.compare(a.firstName, b.firstName, isAsc);
+        case 'lastName': return this.compare(a.lastName, b.lastName, isAsc);
+        default: return 0;
+      }
+    });
+  }
+  
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
 }

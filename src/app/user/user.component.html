@@ -1,9 +1,9 @@
 <div class="container">
 
     <div class="alert alert-warning" *ngIf="userForm.dirty && userForm.invalid">Please fill all fields</div>
-    <!-- <div class="alert alert-warning" *ngIf="userForm.dirty && employeeId.invalid">Min 1 chars in Employee ID</div>
+    <div class="alert alert-warning" *ngIf="userForm.dirty && employeeId.invalid">Min 1 chars in Employee ID</div>
     <div class="alert alert-warning" *ngIf="userForm.dirty && firstName.invalid">Min 4 chars in First Name</div>
-    <div class="alert alert-warning" *ngIf="userForm.dirty && lastName.invalid">Min 4 chars in Last Name</div> -->
+    <div class="alert alert-warning" *ngIf="userForm.dirty && lastName.invalid">Min 4 chars in Last Name</div>
     <form (ngSubmit)="!userForm.invalid && addUser()" #userForm="ngForm">
         <fieldset class="form=group">
             <label>Employee ID:</label>
@@ -24,13 +24,16 @@
         <button class="btn btn-success" type="reset">Reset</button>        
     </form>
 
-    <div class="container top-buffer">
-        <table class="table">
+    <div class="top-buffer container">
+        <p>Employees in the system. Sortable by columns</p>
+    </div>
+    <div class="mat-sort-header-container">
+        <table class="table" matSort (matSortChange)="sortUsers($event)">
             <thead>
                 <tr>
-                    <th>Employee ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
+                    <th mat-sort-header="employeeId">Employee ID</th>
+                    <th mat-sort-header="firstName">First Name</th>
+                    <th mat-sort-header="lastName">Last Name</th>
                 </tr>
             </thead>
             <tbody>

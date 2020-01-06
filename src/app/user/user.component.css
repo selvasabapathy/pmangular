@@ -2,6 +2,10 @@
     border-left: 5px solid red;
 }
 
+.mat-sort-header-container {
+    align-items: center;
+}
+
 .top-buffer { 
-    margin-top:20px; 
+    margin-top:50px; 
 }
