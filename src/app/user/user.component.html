@@ -1,0 +1,50 @@
+<div class="container">
+
+    <div class="alert alert-warning" *ngIf="userForm.dirty && userForm.invalid">Please fill all fields</div>
+    <!-- <div class="alert alert-warning" *ngIf="userForm.dirty && employeeId.invalid">Min 1 chars in Employee ID</div>
+    <div class="alert alert-warning" *ngIf="userForm.dirty && firstName.invalid">Min 4 chars in First Name</div>
+    <div class="alert alert-warning" *ngIf="userForm.dirty && lastName.invalid">Min 4 chars in Last Name</div> -->
+    <form (ngSubmit)="!userForm.invalid && addUser()" #userForm="ngForm">
+        <fieldset class="form=group">
+            <label>Employee ID:</label>
+            <input class="form-control" type="text" name="employeeId" required="required" #employeeId="ngModel" [(ngModel)]="user.employeeId" minlength="1">
+        </fieldset>
+        
+        <fieldset class="form=group">
+            <label>First Name:</label>
+            <input class="form-control" type="text" name="firstName" required="required" #firstName="ngModel" [(ngModel)]="user.firstName" minlength="4">
+        </fieldset>
+        
+        <fieldset class="form=group">
+            <label>Last Name:</label>
+            <input class="form-control" type="text" name="lastName" required="required" #lastName="ngModel" [(ngModel)]="user.lastName" minlength="4">
+        </fieldset>
+
+        <button class="btn btn-success mr-2" type="submit">Add</button>        
+        <button class="btn btn-success" type="reset">Reset</button>        
+    </form>
+
+    <div class="container top-buffer">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <td>{{user.employeeId}}</td>
+                    <td>{{user.firstName}}</td>
+                    <td>{{user.lastName}}</td>
+                    <td>
+                        <button class="btn btn-success mr-2" (click)='editUser(user.userId)'>Edit</button>
+                        <button class="btn btn-warning" (click)='deleteUser(user.userId)'>Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
