@@ -20,7 +20,7 @@
             <input class="form-control" type="text" name="lastName" required="required" #lastName="ngModel" [(ngModel)]="user.lastName" minlength="4">
         </fieldset>
 
-        <button class="btn btn-success mr-2" type="submit">Add</button>        
+        <button class="btn btn-success mr-2" type="submit">{{addOrUpdateButtonText}}</button>
         <button class="btn btn-success" type="reset">Reset</button>        
     </form>
 

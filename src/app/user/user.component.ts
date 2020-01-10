@@ -13,8 +13,9 @@ export class User {
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
+  addOrUpdateButtonText: string = 'Add';
 
-  user: User = new User(0,0,'','');
+  user: User;
   users: User[];
 
   constructor(private userService: UserService) { }
@@ -33,6 +34,8 @@ export class UserComponent implements OnInit {
         }
       )  
     } else {
+      console.log(`Edit user: ` + this.user);
+      this.addOrUpdateButtonText = 'Add';
       this.userService.editUser(this.user.userId, this.user).subscribe(
         response => {
           this.refreshUsers();
@@ -43,6 +46,7 @@ export class UserComponent implements OnInit {
 
   editUser(userId: number) : void {
     console.log(`Edit user: ${userId}`);
+    this.addOrUpdateButtonText = 'Update';
     this.user = this.users.find(user => user.userId === userId);
   }
 
@@ -56,6 +60,8 @@ export class UserComponent implements OnInit {
   }
 
   refreshUsers() : void {
+    this.addOrUpdateButtonText = 'Add';
+    this.user = new User(0,0,'','');
     this.userService.retrieveAllUsers().subscribe(
       response => {
         console.log(`Users from service: ${response}`);

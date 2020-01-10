@@ -1,1 +1,77 @@
-Project Add & Project List Goes Here
+<div class="container">
+
+    <form (ngSubmit)="!projectForm.invalid && addProject()" #projectForm="ngForm">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="name">Project:</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" name="name" placeholder="Name" required="required" #name="ngModel" [(ngModel)]="project.name" minlength="1">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="startDate">Start Date:</label>
+            <div class="col-sm-10 d-flex">
+                <input class="form-control col-sm-10" type="date" id="startDate" name="startDate" [(ngModel)]="project.startDate">
+            </div>
+            <label class="col-sm-2 col-form-label" for="endDate">End Date:</label>
+            <div class="col-sm-10 d-flex">
+                <input class="form-control col-sm-10" type="date" id="startDate" name="endDate" [(ngModel)]="project.endDate">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="priority" class="col-sm-2 col-form-label">Priority:</label>
+            <div class="col-sm-10 d-flex">
+                <span class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+                <input class="form-control range-field" type="range" name="priority" required="required" #priority="ngModel" [(ngModel)]="project.priority" min="0" max="30" />
+                <span class="font-weight-bold indigo-text ml-2 mt-1">30</span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="managerName" class="col-sm-2 col-form-label">Manager:</label>
+            <div class="col-sm-10">
+                <select class="mdb-select" name="user" searchable="Search here..">
+                    <option class="rounded-circle" value="1" disabled selected>Pick a Manager</option>
+                    <option class="rounded-circle" *ngFor="let user of users" value="{{user.userId}}">{{user.firstName + ' ' + user.lastName}}</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="btn btn-success mr-2" type="submit">{{addOrUpdateButtonText}}</button>
+        <button class="btn btn-success" type="reset">Reset</button>        
+    </form>
+
+    <div class="top-buffer container">
+        <p>Projects in the system. Sortable by columns</p>
+    </div>
+    <div class="mat-sort-header-container">
+        <table class="table" matSort (matSortChange)="sortProjects($event)">
+            <thead>
+                <tr>
+                    <th mat-sort-header="project">Project</th>
+                    <th mat-sort-header="priority">priority</th>
+                    <th mat-sort-header="tasks">Tasks</th>
+                    <th mat-sort-header="startDate">Start Date</th>
+                    <th mat-sort-header="endDate">End Date</th>
+                    <th mat-sort-header="completed">Completed</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let project of projects">
+                    <td>{{project.name}}</td>
+                    <td>{{project.priority}}</td>
+                    <td>{{project.tasksCount}}</td>
+                    <td>{{project.startDate}}</td>
+                    <td>{{project.endDate}}</td>
+                    <td>{{project.completed}}</td>
+                    <td>
+                        <button class="btn btn-success mr-2" (click)='editProject(project.projectId)'>Edit</button>
+                        <button class="btn btn-warning" (click)='deleteProject(project.projectId)'>Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
