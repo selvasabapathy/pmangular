@@ -1,21 +1,26 @@
 <div class="container">
 
+    <div class="alert alert-warning" *ngIf="projectForm.dirty && projectForm.invalid">Please fill all fields</div>
+    <div class="alert alert-warning" *ngIf="projectForm.dirty && name.invalid">Min 4 chars in Project name</div>
+    <div class="alert alert-warning" *ngIf="projectForm.dirty && (startDate.invalid || isStartDateError)">Start date must be current date or later</div>
+    <div class="alert alert-warning" *ngIf="projectForm.dirty && (endDate.invalid || isEndDateError)">End date must be after current date and Start date</div>
+
     <form (ngSubmit)="!projectForm.invalid && addProject()" #projectForm="ngForm">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="name">Project:</label>
             <div class="col-sm-10">
-                <input class="form-control" type="text" name="name" placeholder="Name" required="required" #name="ngModel" [(ngModel)]="project.name" minlength="1">
+                <input class="form-control" type="text" name="name" placeholder="Name" required="required" #name="ngModel" [(ngModel)]="project.name" minlength="4">
             </div>
         </div>
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="startDate">Start Date:</label>
             <div class="col-sm-10 d-flex">
-                <input class="form-control col-sm-10" type="date" id="startDate" name="startDate" [(ngModel)]="project.startDate">
+                <input class="form-control col-sm-10" type="date" id="startDate" name="startDate" placeholder="startDate" required="required" #startDate="ngModel" [(ngModel)]="project.startDate" (blur)="validtateDates()">
             </div>
             <label class="col-sm-2 col-form-label" for="endDate">End Date:</label>
             <div class="col-sm-10 d-flex">
-                <input class="form-control col-sm-10" type="date" id="endDate" name="endDate" [(ngModel)]="project.endDate">
+                <input class="form-control col-sm-10" type="date" id="endDate" name="endDate" placeholder="endDate" required="required" #endDate="ngModel" [(ngModel)]="project.endDate" (blur)="validtateDates()">
             </div>
         </div>
 
@@ -38,7 +43,7 @@
         </div>
 
         <button class="btn btn-success mr-2" type="submit">{{addOrUpdateButtonText}}</button>
-        <button class="btn btn-success" type="reset">Reset</button>        
+        <button class="btn btn-success" type="reset" (click)="resetForm()">Reset</button>        
     </form>
 
     <div class="top-buffer container">

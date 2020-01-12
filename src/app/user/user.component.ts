@@ -25,6 +25,11 @@ export class UserComponent implements OnInit {
     this.refreshUsers();
   }
 
+  resetForm() : void {
+    console.log(`Reset form...`);
+    this.refreshUsers();
+  }
+
   addUser() : void {
     console.log(`Add user: ` + this.user);
     if (this.user.userId === 0) {

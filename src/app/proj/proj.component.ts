@@ -24,6 +24,9 @@ export class ProjComponent implements OnInit {
 
   managers: User[];
 
+  isStartDateError: boolean;
+  isEndDateError: boolean;
+
   constructor(private projService: ProjService, private userService: UserService) { }
 
   ngOnInit() {
@@ -32,8 +35,24 @@ export class ProjComponent implements OnInit {
     this.refreshUsers();
   }
 
+  validtateDates() {
+    this.isStartDateError = false;
+    this.isEndDateError = false;
+    if (new Date(this.project.startDate) < new Date()) {
+      this.isStartDateError = true;
+    }
+    if (new Date(this.project.endDate) <= new Date() || new Date(this.project.endDate) < new Date(this.project.startDate)) {
+      this.isEndDateError = true;
+    }
+  }
+
   pickManagerUserId() {
     console.log(`Manager UserId: ${this.userId}`);
+  }
+
+  resetForm() : void {
+    console.log(`Reset form...`);
+    this.refreshProjects();
   }
 
   addProject() : void {
