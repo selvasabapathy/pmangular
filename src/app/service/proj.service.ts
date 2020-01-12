@@ -9,14 +9,14 @@ export class ProjService {
 
   constructor(private httpClient: HttpClient) { }
 
-  addProject(project: Project) {
+  addProject(managerId: number, project: Project) {
     console.log(`Add project: ${project}`);
-    return this.httpClient.post(`http://localhost:8080/projects`, project);
+    return this.httpClient.post(`http://localhost:8080/projects/${managerId}`, project);
   }
 
-  editProject(projectId: number, project: Project) {
+  editProject(managerId: number, project: Project) {
     console.log(`Edited project: ${project}`);
-    return this.httpClient.put(`http://localhost:8080/projects/${projectId}`, project);
+    return this.httpClient.put(`http://localhost:8080/projects/${managerId}`, project);
   }
 
   deleteProject(projectId: number) {

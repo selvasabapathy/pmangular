@@ -34,7 +34,7 @@ export class UserComponent implements OnInit {
         }
       )  
     } else {
-      console.log(`Edit user: ` + this.user);
+      console.log(`Update user: ` + this.user);
       this.addOrUpdateButtonText = 'Add';
       this.userService.editUser(this.user.userId, this.user).subscribe(
         response => {

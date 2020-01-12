@@ -29,6 +29,11 @@ export class UserService {
     return this.httpClient.get<User>(`http://localhost:8080/users/${userId}`);
   }
 
+  retrieveManager(projectId: number) {
+    console.log(`Retrive user(Manager) with ProjectID: ${projectId}`);
+    return this.httpClient.get<User[]>(`http://localhost:8080/managers/${projectId}`);
+  }
+
   retrieveAllUsers() {
     console.log(`Retrive all users...`);
     return this.httpClient.get<User[]>(`http://localhost:8080/users`);

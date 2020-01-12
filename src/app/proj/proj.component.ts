@@ -22,33 +22,36 @@ export class ProjComponent implements OnInit {
   userId: number;
   users: User[];
 
+  managers: User[];
+
   constructor(private projService: ProjService, private userService: UserService) { }
 
   ngOnInit() {
     console.log(`ProjComponent - ngOnInit`);
     this.refreshProjects();
-    this.userService.retrieveAllUsers().subscribe(
-      response => {
-        console.log(`Users from service: ${response}`);
-        this.users = response;
-      }
-    )
+    this.refreshUsers();
+  }
+
+  pickManagerUserId() {
+    console.log(`Manager UserId: ${this.userId}`);
   }
 
   addProject() : void {
-    console.log(`Add project: ` + this.project);
+    console.log(`Project Manager add/update (Manager (UserID): ${this.userId}):  ${this.project}`);
     if (this.project.projectId === 0) {
-      this.projService.addProject(this.project).subscribe(
+      this.projService.addProject(this.userId, this.project).subscribe(
         response => {
           this.refreshProjects();
+          this.refreshUsers();
         }
       )  
     } else {
       console.log(`Edit project: ` + this.project);
       this.addOrUpdateButtonText = 'Add';
-      this.projService.editProject(this.project.projectId, this.project).subscribe(
+      this.projService.editProject(this.userId, this.project).subscribe(
         response => {
           this.refreshProjects();
+          this.refreshUsers();
         }
       )  
     }
@@ -58,6 +61,18 @@ export class ProjComponent implements OnInit {
     console.log(`Edit project: ${projectId}`);
     this.addOrUpdateButtonText = 'Update';
     this.project = this.projects.find(project => project.projectId === projectId);
+    this.userService.retrieveManager(projectId).subscribe(
+      response => {
+        console.log(`Manager of the projectId ${projectId} is ${response.toString}`);
+        if (response.length === 0) {
+          console.log(`Manager of the projectId ${projectId} is NONE`);
+          this.userId = 0;
+        } else {
+          this.managers = response;
+          this.userId = this.managers[0].userId;
+        }
+      }
+    )
   }
 
   deleteProject(projectId: number) : void {
@@ -65,6 +80,18 @@ export class ProjComponent implements OnInit {
     this.projService.deleteProject(projectId).subscribe(
       response => {
         this.refreshProjects();
+        this.refreshUsers();
+      }
+    )
+  }
+
+  refreshUsers() : void {
+    this.userId = 0;
+    this.managers = null;
+    this.userService.retrieveAllUsers().subscribe(
+      response => {
+        console.log(`Users from service: ${response}`);
+        this.users = response;
       }
     )
   }
