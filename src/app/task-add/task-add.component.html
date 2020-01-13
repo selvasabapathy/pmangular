@@ -1,1 +1,75 @@
-<p>task-add works!</p>
+<div class="container">
+
+    <div class="alert alert-warning" *ngIf="taskAddForm.dirty && taskAddForm.invalid">Please fill all fields</div>
+    <div class="alert alert-warning" *ngIf="taskAddForm.dirty && name.invalid">Min 4 chars in Project name</div>
+    <div class="alert alert-warning" *ngIf="taskAddForm.dirty && (startDate.invalid || isStartDateError)">Start date must be current date or later</div>
+    <div class="alert alert-warning" *ngIf="taskAddForm.dirty && (endDate.invalid || isEndDateError)">End date must be after current date and Start date</div>
+
+    <form (ngSubmit)="!taskAddForm.invalid && addTask()" #taskAddForm="ngForm">
+        <div class="form-group row">
+            <label for="managerName" class="col-sm-2 col-form-label">Project:</label>
+            <div class="col-sm-10">
+                <select class="mdb-select" name="project" [(ngModel)]="projectId" (change)="pickProjectId()" searchable="Search here..">
+                    <option class="rounded-circle" *ngFor="let project of projects" value="{{project.projectId}}">{{project.name}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="name">Task:</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" name="name" placeholder="Name" required="required" #name="ngModel" [(ngModel)]="task.name" minlength="4">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            
+            <div class="col-sm-2">
+                <input class="form-control" type="checkbox" name="isParentTask" required="required" #name="ngModel" [(ngModel)]="isParentTask" (change)="isParentTaskFlipped()">
+            </div>
+            <label class="col-sm-2 col-form-label" for="name">Parent Task</label>
+        </div>
+
+        <div class="form-group row">
+            <label for="priority" class="col-sm-2 col-form-label">Priority:</label>
+            <div class="col-sm-10 d-flex">
+                <span class="font-weight-bold indigo-text mr-2 mt-1">0</span>
+                <input class="form-control range-field" type="range" name="priority" [disabled]="isParentTask" required="required" #priority="ngModel" [(ngModel)]="task.priority" min="0" max="30" />
+                <span class="font-weight-bold indigo-text ml-2 mt-1">30</span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="managerName" class="col-sm-2 col-form-label">Parent Task:</label>
+            <div class="col-sm-10">
+                <select class="mdb-select" name="project" [(ngModel)]="parentTaskId" (change)="pickParentTaskId()" searchable="Search here..">
+                    <option class="rounded-circle" [disabled]="isParentTask" *ngFor="let parentTask of parentTasks" value="{{parentTask.parentTaskId}}">{{parentTask.name}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="startDate">Start Date:</label>
+            <div class="col-sm-10 d-flex">
+                <input class="form-control col-sm-10" type="date" id="startDate" name="startDate" placeholder="startDate" [disabled]="isParentTask" required="required" #startDate="ngModel" [(ngModel)]="task.startDate" (blur)="validtateDates()">
+            </div>
+            <label class="col-sm-2 col-form-label" for="endDate">End Date:</label>
+            <div class="col-sm-10 d-flex">
+                <input class="form-control col-sm-10" type="date" id="endDate" name="endDate" placeholder="endDate" [disabled]="isParentTask" required="required" #endDate="ngModel" [(ngModel)]="task.endDate" (blur)="validtateDates()">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="managerName" class="col-sm-2 col-form-label">User:</label>
+            <div class="col-sm-10">
+                <select class="mdb-select" name="user" [(ngModel)]="userId" (change)="pickManagerUserId()" searchable="Search here..">
+                    <option class="rounded-circle" [disabled]="isParentTask" *ngFor="let user of users" value="{{user.userId}}">{{user.firstName + ' ' + user.lastName}}</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="btn btn-success mr-2" type="submit">{{addOrUpdateButtonText}}</button>
+        <button class="btn btn-success" type="reset" (click)="resetForm()">Reset</button>        
+    </form>
+
+</div>
