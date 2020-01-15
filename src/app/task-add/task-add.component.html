@@ -1,33 +1,33 @@
 <div class="container">
 
-    <div class="alert alert-warning" *ngIf="taskAddForm.dirty && taskAddForm.invalid">Please fill all fields</div>
-    <div class="alert alert-warning" *ngIf="taskAddForm.dirty && name.invalid">Min 4 chars in Project name</div>
+    <!-- <div class="alert alert-warning" *ngIf="taskAddForm.dirty && taskAddForm.invalid">Please fill all fields</div> -->
+    <div class="alert alert-warning" *ngIf="taskAddForm.dirty && name.invalid">Min 4 chars in Task name</div>
     <div class="alert alert-warning" *ngIf="taskAddForm.dirty && (startDate.invalid || isStartDateError)">Start date must be current date or later</div>
     <div class="alert alert-warning" *ngIf="taskAddForm.dirty && (endDate.invalid || isEndDateError)">End date must be after current date and Start date</div>
 
-    <form (ngSubmit)="!taskAddForm.invalid && addTask()" #taskAddForm="ngForm">
+    <!-- <form (ngSubmit)="taskAddForm.dirty && !name.invalid && (parentTask || (!parentTask && !isStartDateError && !isEndDateError)) && addTask()" #taskAddForm="ngForm"> -->
+    <form (ngSubmit)="!name.invalid && addTask()" #taskAddForm="ngForm">
         <div class="form-group row">
-            <label for="managerName" class="col-sm-2 col-form-label">Project:</label>
+            <label for="projectName" class="col-sm-2 col-form-label">Project:</label>
             <div class="col-sm-10">
                 <select class="mdb-select" name="project" [(ngModel)]="projectId" (change)="pickProjectId()" searchable="Search here..">
-                    <option class="rounded-circle" *ngFor="let project of projects" value="{{project.projectId}}">{{project.name}}</option>
+                    <option class="rounded-circle" [disabled]="isParentTask" *ngFor="let project of projects" value="{{project.projectId}}">{{project.name}}</option>
                 </select>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="name">Task:</label>
+            <label class="col-sm-2 col-form-label" for="task">Task:</label>
             <div class="col-sm-10">
                 <input class="form-control" type="text" name="name" placeholder="Name" required="required" #name="ngModel" [(ngModel)]="task.name" minlength="4">
             </div>
         </div>
 
         <div class="form-group row">
-            
             <div class="col-sm-2">
-                <input class="form-control" type="checkbox" name="isParentTask" required="required" #name="ngModel" [(ngModel)]="isParentTask" (change)="isParentTaskFlipped()">
+                <input class="form-control" type="checkbox" name="isParentTask" required="required" #parentTaskChecked="ngModel" [(ngModel)]="isParentTask" (change)="isParentTaskFlipped()">
             </div>
-            <label class="col-sm-2 col-form-label" for="name">Parent Task</label>
+            <label class="col-sm-2 col-form-label" for="parentTask">Parent Task</label>
         </div>
 
         <div class="form-group row">
@@ -62,7 +62,7 @@
         <div class="form-group row">
             <label for="managerName" class="col-sm-2 col-form-label">User:</label>
             <div class="col-sm-10">
-                <select class="mdb-select" name="user" [(ngModel)]="userId" (change)="pickManagerUserId()" searchable="Search here..">
+                <select class="mdb-select" name="user" [(ngModel)]="userId" (change)="pickUserId()" searchable="Search here..">
                     <option class="rounded-circle" [disabled]="isParentTask" *ngFor="let user of users" value="{{user.userId}}">{{user.firstName + ' ' + user.lastName}}</option>
                 </select>
             </div>
