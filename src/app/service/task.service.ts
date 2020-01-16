@@ -16,21 +16,21 @@ export class TaskService {
 
   editTask(taskId: number, task: Task) {
     console.log(`Edited task: ${task}`);
-    return this.httpClient.put(`http://localhost:8080/tasks/{taskId}`, task);
+    return this.httpClient.put<Task>(`http://localhost:8080/tasks/${taskId}`, task);
   }
 
   deleteTask(taskId: number) {
     console.log(`Delete task with taskId: ${taskId}`);
-    return this.httpClient.delete(`http://localhost:8080/tasks/{taskId}`);
+    return this.httpClient.delete(`http://localhost:8080/tasks/${taskId}`);
   }
 
   retrieveTask(projectId: number, taskId: number) {
     console.log(`Retrive task with taskId: ${taskId}`);
-    return this.httpClient.get<Task>(`http://localhost:8080/tasks/{projectId}/{taskId}`);
+    return this.httpClient.get<Task>(`http://localhost:8080/tasks/${projectId}/${taskId}`);
   }
 
   retrieveAllTasks(projectId: number) {
-    console.log(`Retrive all tasks...`);
-    return this.httpClient.get<Task[]>(`http://localhost:8080/{projectId}/tasks`);
+    console.log(`Retrive all tasks... for ProjectID: ${projectId}`);
+    return this.httpClient.get<Task[]>(`http://localhost:8080/tasks/${projectId}`);
   }
 }
