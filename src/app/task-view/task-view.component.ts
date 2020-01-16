@@ -46,6 +46,7 @@ export class TaskViewComponent implements OnInit {
     this.task = this.tasks.find(task => task.taskId === taskId);
     console.log(`End Task with TaskID: ${taskId} & Task: ${this.task}`);
     this.task.endDate = new Date();
+    this.task.status = true;
     this.taskService.editTask(taskId, this.task).subscribe(
       response => {
         this.refreshTasks();
@@ -97,15 +98,17 @@ export class TaskViewComponent implements OnInit {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'taskName': return this.compare(a.name, b.name, isAsc);
+        case 'parentTaskName': return this.compare(a.parentTaskId, b.parentTaskId, isAsc);
         case 'priority': return this.compare(a.priority, b.priority, isAsc);
         case 'startDate': return this.compare(a.startDate, b.startDate, isAsc);
         case 'endDate': return this.compare(a.endDate, b.endDate, isAsc);
+        case 'status': return this.compare(a.status, b.status, isAsc);
         default: return 0;
       }
     });
   }
   
-  compare(a: number | string | Date, b: number | string | Date, isAsc: boolean) {
+  compare(a: boolean | number | string | Date, b: boolean | number | string | Date, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
