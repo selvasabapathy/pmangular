@@ -6,6 +6,7 @@ import { UserService } from '../service/user.service';
 import { Project } from '../proj/proj.component';
 import { ParentTaskService } from '../service/parent-task.service';
 import { TaskService } from '../service/task.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 export class ParentTask {
   constructor(public parentTaskId: number, public name: string) {}
@@ -27,6 +28,7 @@ export class TaskAddComponent implements OnInit {
   project: Project;
   projects: Project[];
 
+  taskId: number;
   task: Task;
   isParentTask: boolean;
 
@@ -41,7 +43,7 @@ export class TaskAddComponent implements OnInit {
   isStartDateError: boolean;
   isEndDateError: boolean;
 
-  constructor(private projService: ProjService, private parentTaskService: ParentTaskService, private taskService: TaskService, private userService: UserService) { }
+  constructor(private projService: ProjService, private parentTaskService: ParentTaskService, private taskService: TaskService, private userService: UserService, private router : Router, private route : ActivatedRoute) { }
 
   ngOnInit() {
     console.log(`TaskAddComponent - ngOnInit`);
@@ -49,6 +51,19 @@ export class TaskAddComponent implements OnInit {
     this.refreshProjects();
     this.refreshParentTasks()
     this.refreshUsers();
+    if (undefined !== this.route.snapshot.params['editTaskId']) {
+      this.addOrUpdateButtonText = 'Update';
+      this.projectId = this.route.snapshot.params['editProjectId'];
+      this.taskId = this.route.snapshot.params['editTaskId'];
+      this.taskService.retrieveTask(this.projectId, this.taskId).subscribe(
+        response => {
+          this.task = response;
+          this.userId = this.task.userId;
+          this.projectId = this.task.projectId;
+          this.parentTaskId = this.task.parentTaskId;
+        }
+      );
+    }
   }
 
   validtateDates() {
@@ -153,16 +168,6 @@ export class TaskAddComponent implements OnInit {
     console.log(`Edit Task: Not used... use add() instead`);
   }
 
-  // deleteProject(projectId: number) : void {
-  //   console.log(`Delete Project with projectId: ${projectId}`);
-  //   this.projService.deleteProject(projectId).subscribe(
-  //     response => {
-  //       this.refreshProjects();
-  //       this.refreshUsers();
-  //     }
-  //   )
-  // }
-
   refreshFields() : void {
     this.task = new Task(0,0,0,0,'',new Date(), new Date(), 0, false);
     this.isParentTask = false;
@@ -201,29 +206,5 @@ export class TaskAddComponent implements OnInit {
       }
     )
   }
-
-
-  // sortProjects(sort: Sort) {
-  //   const data = this.projects;
-  //   if (!sort.active || sort.direction === '') {
-  //     this.projects = data;
-  //     return;
-  //   }
-
-  //   this.projects = data.sort((a, b) => {
-  //     const isAsc = sort.direction === 'asc';
-  //     switch (sort.active) {
-  //       case 'startDate': return this.compare(a.startDate, b.startDate, isAsc);
-  //       case 'endDate': return this.compare(a.endDate, b.endDate, isAsc);
-  //       case 'priority': return this.compare(a.priority, b.priority, isAsc);
-  //       case 'completed': return this.compare(a.completed, b.completed, isAsc);
-  //       default: return 0;
-  //     }
-  //   });
-  // }
-  
-  // compare(a: boolean | number | string | Date, b: boolean | number | string | Date, isAsc: boolean) {
-  //   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-  // }
 
 }

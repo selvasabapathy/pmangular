@@ -6,6 +6,7 @@ import { TaskService } from '../service/task.service';
 import { Project } from '../proj/proj.component';
 import { ProjService } from '../service/proj.service';
 import { ParentTaskService } from '../service/parent-task.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-view',
@@ -26,7 +27,7 @@ export class TaskViewComponent implements OnInit {
   task: Task;
   tasks: Task[];
 
-  constructor(private projService: ProjService, private parentTaskService: ParentTaskService, private taskService: TaskService) { }
+  constructor(private projService: ProjService, private parentTaskService: ParentTaskService, private taskService: TaskService, private router : Router) { }
 
   ngOnInit() {
     this.refreshProjects();
@@ -38,8 +39,9 @@ export class TaskViewComponent implements OnInit {
     this.refreshTasks();
   }
 
-  editTask(taskId: number) : void {
-    console.log(`Edit Task with TaskID: ${taskId}`);
+  editTask(projectId: number, taskId: number) : void {
+    console.log(`Edit Task with ProjectID/TaskID: ${projectId}/${taskId}`);
+    this.router.navigate(['taskadd', {editProjectId: projectId, editTaskId: taskId}]);
   }
 
   endTask(taskId: number) : void {

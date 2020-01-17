@@ -33,7 +33,7 @@
                     <td>{{task.endDate | date:'MM/dd/yyyy'}}</td>
                     <td><input type="checkbox" [(ngModel)]="task.status" disabled="true"/></td>
                     <td>
-                        <button class="btn btn-success mr-2" (click)='editTask(task.taskId)'>Edit</button>
+                        <button class="btn btn-success mr-2" (click)='editTask(task.projectId, task.taskId)'>Edit</button>
                         <button class="btn btn-warning" (click)='endTask(task.taskId)'>End</button>
                     </td>
                 </tr>

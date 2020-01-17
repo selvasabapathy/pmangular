@@ -25,7 +25,7 @@ export class TaskService {
   }
 
   retrieveTask(projectId: number, taskId: number) {
-    console.log(`Retrive task with taskId: ${taskId}`);
+    console.log(`Retrive task with projectId / taskId: ${projectId} / ${taskId}`);
     return this.httpClient.get<Task>(`http://localhost:8080/tasks/${projectId}/${taskId}`);
   }
 
